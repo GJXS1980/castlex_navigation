@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<launch>
+
+<!-- 机械臂初始化位置设置服务器start -->
+<node pkg="dobot" type="init_server" name="init_server" >
+  <!-- 放置物体时机械臂的x坐标(笛卡尔坐标系) -->    
+  <param name="robot_init_x" value="200.0" />
+  <!-- 放置物体时机械臂的y坐标(笛卡尔坐标系) -->      
+  <param name="robot_init_y" value="0.0" />
+  <!-- 放置物体时机械臂的z坐标(笛卡尔坐标系) -->    
+  <param name="robot_init_z" value="60.0" />
+</node>
+<!-- 机械臂初始化位置设置服务器end -->
+
+<!-- 机械臂初始化状态客户端  -->
+<node pkg="dobot" type="init_client" name="init_client" />
+
+
+<!--   物体识别服务器start -->
+<node pkg="dobot" type="object_detect_server" name="object_detect_server" >
+  <!-- 识别物体时机械臂的x坐标(笛卡尔坐标系)  -->
+  <param name="detect_x" value="230.0" />   
+  <!-- 识别物体时机械臂的y坐标(笛卡尔坐标系)  -->  
+  <param name="detect_y" value="0.0" />  
+  <!-- 识别物体时机械臂的z坐标(笛卡尔坐标系) -->   
+  <param name="detect_z" value="120.0" />
+</node>
+<!-- 物体识别服务器end -->
+
+<!-- 物体的识别客户端  -->
+<node pkg="dobot" type="object_detect_client" name="object_detect_client" />
+
+<!-- 物体的抓取服务器start -->
+<node pkg="dobot" type="pick_up_server" name="pick_up_server" >
+  <!-- 方块的边长  -->
+  <param name="side_length" value="33.87" />   
+  <!-- 相机到吸盘的距离（x方向的偏差）  -->  
+	<param name="CamToSucker" value="48" />  
+  <!-- 相机与吸盘在y方向的偏差  -->
+  <param name="CamToSuc_deviation" value="8" />  
+  <!-- 吸盘吸取的高度  -->   
+	<param name="suck_z" value="-8.0" />
+  <!-- 识别物体时机械臂的x坐标(笛卡尔坐标系),数值跟robot_object_detect_server设置保持一致  -->   
+  <param name="detect_x" value="230.0" />
+  <!-- 识别物体时机械臂的y坐标(笛卡尔坐标系),数值跟robot_object_detect_server设置保持一致 -->   
+  <param name="detect_y" value="0.0" />
+</node>
+<!-- 物体的抓取服务器end -->
+
+<!-- 物体的抓取客户端  -->
+<node pkg="dobot" type="pick_up_client" name="pick_up_client" />
+
+
+<!-- 物体的放置服务器start -->
+<node pkg="dobot" type="drop_off_server" name="drop_off_server" >
+  <!-- 放置物体时机械臂的x坐标(笛卡尔坐标系) -->    
+  <param name="drop_off_x" value="200.0" />
+  <!-- 放置物体时机械臂的y坐标(笛卡尔坐标系) -->      
+  <param name="drop_off_y" value="0.0" />
+  <!-- 放置物体时机械臂的z坐标(笛卡尔坐标系) -->    
+  <param name="drop_off_z" value="10" />
+</node>
+<!-- 物体的放置服务器end -->
+
+<!-- 物体的放置客户端  -->
+<node pkg="dobot" type="drop_off_client" name="drop_off_client" />
+</launch>

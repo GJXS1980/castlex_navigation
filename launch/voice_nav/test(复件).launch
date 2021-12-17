@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<launch>
+  <include file="$(find castlex_navigation)/launch/nav_ws/castlex_nav.launch"/>
+    <!--打开语音唤醒-->
+    <include file="$(find castlex_voice_system)/launch/castlex_awake.launch"/>
+    <!--打开命令词识别-->
+    <node pkg = "castlex_voice_system" type = "commen_order_node" name = "commen_order_node" output="screen"/>
+
+  <node pkg = "castlex_navigation" type = "castlex_nav.py" name = "castlex_commentary" output="screen" />
+          <!--param name="start" value="$(find castlex_navigation)/voice/jiangjie/start.mp3" />
+          <param name="end" value="$(find castlex_navigation)/voice/jiangjie/end.mp3" />
+
+          <param name="guest_rooms" value="$(find castlex_navigation)/voice/jiangjie/guest_rooms.mp3" />
+          <param name="go_hall" value="$(find castlex_navigation)/voice/jiangjie/go_hall.mp3" />
+          <param name="hall" value="$(find castlex_navigation)/voice/jiangjie/hall.mp3" />
+          <param name="go_warehouse" value="$(find castlex_navigation)/voice/jiangjie/go_warehouse.mp3" />
+          <param name="warehouse" value="$(find castlex_navigation)/voice/jiangjie/warehouse.mp3" />
+          <param name="go_bedroom" value="$(find castlex_navigation)/voice/jiangjie/go_bedroom.mp3" />
+          <param name="bedroom" value="$(find castlex_navigation)/voice/jiangjie/bedroom.mp3" />
+
+
+    </node-->
+</launch>

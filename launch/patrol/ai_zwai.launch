@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<launch>
+    <!--打开语音唤醒-->
+    <include file="$(find castlex_voice_system)/launch/castlex_awake.launch"/>
+    <!--打开命令词识别-->
+    <node pkg = "castlex_voice_system" type = "castlex_zwai_node" name = "castlex_zwai_node" output="screen"/>
+  <!-- 启动导航  -->
+   <include file="$(find castlex_navigation)/launch/nav_ws/castlex_nav.launch"/>
+
+   <node pkg = "castlex_navigation" type = "ai_zwai_nav.py" name = "ai_zwai_nav" output="screen" >
+          <param name="file_path_s" value="$(find castlex_navigation)/voice/ai/xiaogu.mp3" />
+          <param name="file_path_a" value="$(find castlex_navigation)/voice/ai/go_A.mp3" />
+          <param name="file_path_b" value="$(find castlex_navigation)/voice/ai/A.mp3" />
+          <param name="file_path_c" value="$(find castlex_navigation)/voice/ai/go_B.mp3" />
+          <param name="file_path_d" value="$(find castlex_navigation)/voice/ai/B.mp3" />
+          <param name="file_path_e" value="$(find castlex_navigation)/voice/ai/go_C.mp3" />
+          <param name="file_path_f" value="$(find castlex_navigation)/voice/ai/C.mp3" />
+          <param name="file_path_g" value="$(find castlex_navigation)/voice/ai/go_D.mp3" />
+          <param name="file_path_h" value="$(find castlex_navigation)/voice/ai/D.mp3" />
+          <param name="file_path_i" value="$(find castlex_navigation)/voice/ai/end_1.mp3" />
+          <param name="file_path_j" value="$(find castlex_navigation)/voice/ai/end_2.mp3" />
+          <param name="file_path_k" value="$(find castlex_navigation)/voice/ai/nest.mp3" />
+    </node>
+	
+    	
+   <node pkg = "iot_wifi_system" type = "IOT_WIFI_Node" name = "IOT_WIFI_Node" output="screen" />
+
+</launch>
+
+

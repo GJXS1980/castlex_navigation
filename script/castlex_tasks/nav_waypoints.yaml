@@ -1,0 +1,107 @@
+# 导航点
+waypoint0: 
+      position: 
+        x: -2.0788872242
+        y: 1.88362109661
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: -0.276750337438
+        w: 0.96094185606
+
+waypoint1: 
+      position: 
+        x: -1.01695775986
+        y: 1.47397327423
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.385447846784
+        w: 0.922729623134
+
+waypoint2: 
+      position: 
+        x: -1.25640273094
+        y: 1.04358208179
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: -0.207339279693
+        w: 0.978269095442
+
+waypoint3: 
+      position: 
+        x: -0.317626714706
+        y: 0.537917137146
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.888453391006
+        w: -0.458966852845
+
+
+
+# 路径规划(讲解),data: 导航点；data1:讲解音频；data2:进入下一个区域音频；
+# 路径规划(物联网) ， data: 导航点；sp_data：喷雾消杀（0-3）；ul_data：紫外线消杀（0-1）；iot_light：物联网灯（0-7）；iot_trashcan：物联网窗帘（0-1）；iot_gateway：物联网闸机（0-1）；iot_door：物联网门铃（0-3）
+
+route0: 
+  station0: (1, 2, 3)
+  station1: (3, 4, 5)
+  station2: (2, 6, 7)
+  station3: (0, 8, 1)
+
+route1: 
+  station0: (1, 2, 3)
+  station1: (3, 4, 5)
+  station2: (2, 6, 7)
+  station3: (0, 8, 1)
+
+route2: 
+  station0: (1, 2, 3)
+  station1: (3, 4, 5)
+  station2: (2, 6, 7)
+  station3: (0, 8, 1)
+
+route3: 
+  station0: (1, 2, 3)
+  station1: (3, 4, 5)
+  station2: (2, 6, 7)
+  station3: (0, 8, 1)
+
+route4: 
+  station0: (0, None, 1, 7, 1, 1, 1)
+  station1: (1, None, 0, 0, 0, 0, 2)
+  station2: (3, None, 0, 0, 0, 0, 3)
+  station3: (2, None, 1, 7, 1, 1, 0)
+  station4: (0, None, 0, 0, 0, 0, 0)
+  station5: (0, None, 0, 0, 0, 0, 0)
+
+route5: 
+  station0: (0, None, 1,    1, 1, 1, 1)
+  station1: (1, None, None, 3, 0, 0, 2)
+  station2: (3, None, 0,    0, 7, 0, 3)
+  station3: (2, None, 1,    7, 1, 1, 0)
+  station4: (0, None, 0,    0, 0, 0, 0)
+
+
+# 语音文件
+sound: 
+  sound0: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/start.mp3'
+  sound1: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/end.mp3'
+  sound2: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/guest_rooms.mp3'
+  sound3: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/go_hall.mp3'
+  sound4: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/hall.mp3'
+  sound5: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/go_warehouse.mp3'
+  sound6: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/warehouse.mp3'
+  sound7: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/go_bedroom.mp3'
+  sound8: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/bedroom.mp3'
+  sound9: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/bedroom.mp3'
+
+
+
+
+

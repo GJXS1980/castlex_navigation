@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<launch>
+(激光)
+ <include file="$(find arvlidar_ros)/launch/castlexlidar_A2.launch"/>
+(底盘)
+ <include file="$(find castlex_bringup)/launch/castlex_bringup.launch"/>
+
+ <include file="$(find castlex_navigation)/launch/nav_ws/castlex_amcl_nav.launch"/>
+</launch>
+

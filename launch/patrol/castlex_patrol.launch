@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<launch>
+
+<include file="$(find castlex_navigation)/launch/nav_ws/castlex_nav.launch"/>
+
+<node pkg = "castlex_navigation" type = "patrol_nav.py" name = "patrol_castlex" output="screen" />
+
+</launch>

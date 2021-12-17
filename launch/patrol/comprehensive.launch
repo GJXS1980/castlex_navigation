@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<launch>
+  <!-- 启动导航  -->
+   <include file="$(find castlex_navigation)/launch/nav_ws/castlex_nav.launch"/>
+
+   <node pkg = "castlex_navigation" type = "castlex_iot_nav.py" name = "castlex_iot_nav" output="screen" >
+          <param name="file_path_a" value="$(find castlex_navigation)/voice/peisong/peisong_0.mp3" />
+          <param name="file_path_b" value="$(find castlex_navigation)/voice/peisong/peisong_1.mp3" />
+          <param name="file_path_c" value="$(find castlex_navigation)/voice/peisong/peisong_2.mp3" />
+          <param name="file_path_d" value="$(find castlex_navigation)/voice/peisong/peisong_3.mp3" />
+    </node>
+
+   <node pkg = "iot_wifi_system" type = "IOT_WIFI_Node" name = "IOT_WIFI_Node" output="screen" />
+</launch>
+
+
