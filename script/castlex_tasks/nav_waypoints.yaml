@@ -1,58 +1,99 @@
 # 导航点
 waypoint0: 
       position: 
-        x: -2.0788872242
-        y: 1.88362109661
+        x: -0.781872630119
+        y: -0.390957474709
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: -0.276750337438
-        w: 0.96094185606
+        z: -0.117613749993
+        w: 0.993059417061
+
 
 waypoint1: 
       position: 
-        x: -1.01695775986
-        y: 1.47397327423
+        x: 0.14893245697
+        y: -0.815593719482
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: 0.385447846784
-        w: 0.922729623134
+        z: -0.0969293476382
+        w: 0.995291264689
+
 
 waypoint2: 
       position: 
-        x: -1.25640273094
-        y: 1.04358208179
+        x: -1.14951014519
+        y: 0.628080606461
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: -0.207339279693
-        w: 0.978269095442
+        z: -0.743454973442
+        w: 0.668785991529
+
 
 waypoint3: 
       position: 
-        x: -0.317626714706
-        y: 0.537917137146
+        x: 1.20587611198
+        y: -0.334169477224
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: 0.888453391006
-        w: -0.458966852845
+        z: -0.193532008432
+        w: 0.981093961714
+
+
+waypoint4: 
+      position: 
+        x: 2.03574728966
+        y: -0.58551877737
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.717504043569
+        w: 0.696554339203
+
+waypoint5: 
+      position: 
+        x: 2.04890298843
+        y: -1.06287884712
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.982856446206
+        w: 0.184372465814
+
+
+waypoint6: 
+      position: 
+        x: 1.26335155964
+        y: -1.2182765007
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: -0.729967893712
+        w: 0.68348143658
+
 
 
 
 # 路径规划(讲解),data: 导航点；data1:讲解音频；data2:进入下一个区域音频；
-# 路径规划(物联网) ， data: 导航点；sp_data：喷雾消杀（0-3）；ul_data：紫外线消杀（0-1）；iot_light：物联网灯（0-7）；iot_trashcan：物联网窗帘（0-1）；iot_gateway：物联网闸机（0-1）；iot_door：物联网门铃（0-3）
 
 route0: 
-  station0: (1, 2, 3)
-  station1: (3, 4, 5)
-  station2: (2, 6, 7)
-  station3: (0, 8, 1)
+  station0: (1, None, None)
+  station1: (2, None, None)
+  station2: (3, None, None)
+  station3: (4, None, None)
+  station4: (5, None, None)
+  station5: (6, None, None)
+
 
 route1: 
   station0: (1, 2, 3)
@@ -73,20 +114,42 @@ route3:
   station3: (0, 8, 1)
 
 route4: 
-  station0: (0, None, 1, 7, 1, 1, 1)
-  station1: (1, None, 0, 0, 0, 0, 2)
-  station2: (3, None, 0, 0, 0, 0, 3)
-  station3: (2, None, 1, 7, 1, 1, 0)
-  station4: (0, None, 0, 0, 0, 0, 0)
-  station5: (0, None, 0, 0, 0, 0, 0)
+  station0: (0, 4, 5)
+  station1: (1, 6, 7)
+  station2: (5, 2, 7)
+  station3: (4, 8, 1)
+  station4: (0, None, None)
+
+# 路径规划(物联网) ， data: 导航点；sp_data：喷雾消杀（0-3）；ul_data：紫外线消杀（0-1）；iot_light：物联网灯（0-7）；iot_trashcan：物联网窗帘（0-1）；iot_gateway：物联网闸机（0-1）；iot_door：物联网门铃（0-3）
+
+# 111  110 .... 000 11 .. 00
 
 route5: 
-  station0: (0, None, 1,    1, 1, 1, 1)
-  station1: (1, None, None, 3, 0, 0, 2)
-  station2: (3, None, 0,    0, 7, 0, 3)
-  station3: (2, None, 1,    7, 1, 1, 0)
-  station4: (0, None, 0,    0, 0, 0, 0)
+  station0: (0, None, 1, 7, 1, 1, 1)
+  station1: (1, None, None, 0, 0, 0, 2)
+  station2: (4, None, None, 0, 0, 0, 3)
+  station3: (5, None, 0, 7, 1, 1, 0)
+  station4: (0, None, None, 0, 0, 0, 0)
 
+route6: 
+  station0: (0, 2, None, 1, 1, 1, 1)
+  station1: (1, None, None, 3, 0, 0, 2)
+  station2: (4, None, None, 0, 0, 1, 3)
+  station3: (5, None, None, 7, 1, 0, 0)
+  station4: (0, 0, None, 0, 0, 1, 0)
+
+
+# 路径规划(物联网) ， data: 导航点；warehouse_pub:货仓控制（0-2）；arm_data: 机械臂控制；iot_light：物联网灯（0-7）；iot_trashcan：物联网窗帘（0-1）；iot_gateway：物联网闸机（0-1）；iot_door：物联网门铃（0-3） 
+
+route7: 
+  station0: (0, None, None, 0, 0, 0, 0)
+  station1: (1, 1, None, 0, 0, 0, 0)
+  station2: (2, None, None, 0, 0, 1, 0)
+  station3: (3, None, None, 0, 0, 0, 0)
+  station4: (4, 1, None, 1, 0, 0, 1)
+  station5: (3, None, None, 0, 0, 1, 0)
+  station6: (2, None, None, 0, 0, 0, 0)
+  station7: (0, None, None, 0, 0, 0, 0)
 
 # 语音文件
 sound: 

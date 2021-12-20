@@ -9,8 +9,9 @@ from playsound import playsound
 from actionlib_msgs.msg import *
 from geometry_msgs.msg import Pose, Point, Quaternion, Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from std_msgs.msg import Float32MultiArray, Int64
-from std_msgs.msg import Float32MultiArray, Int32
+from std_msgs.msg import Int32MultiArray, Int64
+from std_msgs.msg import Float32MultiArray, Int32 
+ 
 
 from ruamel import yaml
 # sudo pip install ruamel.yaml
@@ -18,17 +19,19 @@ class MoveBaseDoor():
     def __init__(self):
         self.i, self.runing, self.id = 0, 1, 0  
         self.nav_data = False
+        self.order = None
         #         初始化ros节点
         rospy.init_node('send_goals_node', anonymous=False)
         rospy.on_shutdown(self.shutdown)
         self.routes, self.waypoints, self.sounds = [], list(), []
         #   导入yaml文件
-        self.data = (yaml.safe_load(open('/home/castlex/castlex_ws/src/castlex_navigation/script/nav_waypoints.yaml'))) 
+        self.data = (yaml.safe_load(open('/home/castlex/castlex_ws/src/castlex_navigation/script/castlex_tasks/nav_waypoints.yaml'))) 
 
-        #   订阅紫外线话题
-        rospy.Subscriber('/Disinfect_CMD_Topic', Int32, self.castlex_ul_order)
+        #   订阅紫外线话题 
+        rospy.Subscriber('/Ultraviolet_CMD_Topic', Int64, self.castlex_ul_order)
         #   订阅喷雾消杀话题
-        rospy.Subscriber('/Commen_CMD_Topic', Float32MultiArray, self.castlex_sp_order)
+        rospy.Subscriber('/Disinfect_CMD_Topic', Int32MultiArray, self.castlex_sp_order)
+        
 
         #   发布紫外消杀话题
         self.ul_pub = rospy.Publisher("/light_control", Int32, queue_size=1)
@@ -46,11 +49,11 @@ class MoveBaseDoor():
 
 
     #   获取yaml文件数据(data:yaml的文件路径，str_word:获取名称， i:提取几个导航点，j：选取的路径,k：路径有几个途经点 )
-        self.routes = self.yaml_data(self.data, 'route', None, 5, 5, None)
+        self.routes = self.yaml_data(self.data, 'route', None, 6, 5, None)
         #   获取导航点
-        self.waypoints = self.yaml_data(self.data, 'waypoint', 4, None, None, None)
+        self.waypoints = self.yaml_data(self.data, 'waypoint', 7, None, None, None)
         #   获取语音文件
-        self.sounds = self.yaml_data(self.data, 'sound', 4, None, None, 10)
+        self.sounds = self.yaml_data(self.data, 'sound', 5, None, None, 10)
 
         # 播放开始音频
         #playsound(self.sounds[0])
@@ -59,7 +62,8 @@ class MoveBaseDoor():
         while self.runing:
             # 用了几条路径，和self.routes第二个值对应上
             # self.routing_nav(4)
-            self.routing_iot_nav(5)
+            if self.order :
+                self.routing_iot_nav(6)
 
 
     # 紫外消杀命令词
@@ -151,7 +155,7 @@ class MoveBaseDoor():
             for i in range(0, 2):
                 if i == ul_data:
                     self.ul_pub.publish(ul_data)
-                    rospy.sleep(10) 
+                    rospy.sleep(35) 
                     break
             self.nav_data = False
 
