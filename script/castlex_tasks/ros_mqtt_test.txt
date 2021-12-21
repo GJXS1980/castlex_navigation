@@ -1,0 +1,41 @@
+=====================MQTTT通信协议======================
+共用话题：
+QTT话题:/castlex_arm_msg
+Action1
+# castlex到机械臂工作区域，向机械臂发送请求装货指令
+{
+	name:"castlex",
+	dir:"arm",	
+	ation: "loading",	// 装货
+	"error":"null"
+	"feedback": 0		// 0：发起，1：回复
+}
+# 机械臂向castlex回复请求装货指令已经收到
+{
+	name:"arm",
+	dir:"castlex",	
+	ation: "loading",	
+	"error":"null"
+	"feedback": 1
+}
+
+Action2
+# 机械臂向castlex发送装货完成指令
+{
+	name:"arm",
+	dir:"castlex",	
+	ation: "loading complete", 	
+	"error":"null"
+	"feedback": 0
+}
+
+# castlex向机械臂回复收到装货完成指令
+{
+	name:"castlex",
+	dir:"arm",	
+	ation: "loading complete",	
+	"error":"null"
+	"feedback": 1
+}
+
+
