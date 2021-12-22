@@ -51,9 +51,9 @@ class castlex_with_arm():
         rospy.Subscriber('/gyro_data', Float32, self.castlex_arm_mqtt)
 
         #   发布紫外消杀话题
-        self.ul_pub = rospy.Publisher("/light_control", Int32, queue_size=1)
+        self.ul_pub = rospy.Publisher("/ultraviolet_disinfection", Int32, queue_size=1)
         #   发布喷雾消杀话题
-        self.sp_pub = rospy.Publisher("/disinfect_switch", Int32, queue_size=1)
+        self.sp_pub = rospy.Publisher("/spray_kill", Int32, queue_size=1)
         #   发布货仓控制话题
         self.warehouse_pub = rospy.Publisher('/Warehouse_control', Int32, queue_size=1)
         # 门铃控制,发送给物联网模块  1/0  开/关

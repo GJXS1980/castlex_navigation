@@ -27,16 +27,10 @@ class MoveBaseDoor():
         #   导入yaml文件
         self.data = (yaml.safe_load(open('/home/castlex/castlex_ws/src/castlex_navigation/script/castlex_tasks/nav_waypoints.yaml'))) 
 
-        #   订阅紫外线话题 
-        rospy.Subscriber('/Ultraviolet_CMD_Topic', Int64, self.castlex_ul_order)
-        #   订阅喷雾消杀话题
-        rospy.Subscriber('/Disinfect_CMD_Topic', Int32MultiArray, self.castlex_sp_order)
-        
-
         #   发布紫外消杀话题
-        self.ul_pub = rospy.Publisher("/light_control", Int32, queue_size=1)
+        self.ul_pub = rospy.Publisher("/ultraviolet_disinfection", Int32, queue_size=1)
         #   发布喷雾消杀话题
-        self.sp_pub = rospy.Publisher("/disinfect_switch", Int32, queue_size=1)
+        self.sp_pub = rospy.Publisher("/spray_kill", Int32, queue_size=1)
 
         # 门铃控制,发送给物联网模块  1/0  开/关
         self.door_cmd = rospy.Publisher('/Door_CMD_Topic', Int32, queue_size=1)
@@ -64,24 +58,6 @@ class MoveBaseDoor():
             # self.routing_nav(4)
             if self.order :
                 self.routing_iot_nav(6)
-
-
-    # 紫外消杀命令词
-    def castlex_ul_order(self, data):
-        if(data.data == 0 and self.order) :
-            self.ac.cancel_goal()
-            self.ul_pub.publish(0)
-        self.order = data.data
-        self.grade = data.data
-
-    # 喷雾消杀命令词
-    def castlex_sp_order(self, data):
-        if(data.data[1] == 0 and self.order) :
-            self.ac.cancel_goal()
-            self.sp_pub.publish(0)
-        self.order = data.data[1]
-        self.grade = data.data[0]
-
 
     # 结合路径和导航进行控制
     def routing_nav(self, data):

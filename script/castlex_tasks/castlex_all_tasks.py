@@ -26,15 +26,11 @@ class MoveBaseDoor():
         #   导入yaml文件
         self.data = (yaml.safe_load(open('/home/castlex/castlex_ws/src/castlex_navigation/script/castlex_tasks/nav_waypoints.yaml'))) 
 
-        #   订阅紫外线话题 
-        rospy.Subscriber('/Ultraviolet_CMD_Topic', Int64, self.castlex_ul_order)
-        #   订阅喷雾消杀话题
-        rospy.Subscriber('/Disinfect_CMD_Topic', Int32MultiArray, self.castlex_sp_order)
 
         #   发布紫外消杀话题
-        self.ul_pub = rospy.Publisher("/light_control", Int32, queue_size=1)
+        self.ul_pub = rospy.Publisher("ultraviolet_disinfection", Int32, queue_size=1)
         #   发布喷雾消杀话题
-        self.sp_pub = rospy.Publisher("/disinfect_switch", Int32, queue_size=1)
+        self.sp_pub = rospy.Publisher("spray_kill", Int32, queue_size=1)
 
         #   发布货仓控制话题
         self.warehouse_pub = rospy.Publisher('/Warehouse_control', Int32, queue_size=1)
