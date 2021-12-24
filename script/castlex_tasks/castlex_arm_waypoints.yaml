@@ -1,0 +1,161 @@
+# 导航点
+# 0:大厅； 1：过渡点； 2：仓库（机械壁）； 3：到闸机； 4：过闸机； 5：客房1； 6：客房； 7：客房2
+waypoint0: 
+      position: 
+        x: -0.594995141029
+        y: -0.111547529697
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: -0.573746675316
+        w: 0.819032815316
+
+waypoint1: 
+      position: 
+        x: -0.614766180515
+        y: -0.480260670185
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: -0.479362584697
+        w: 0.877616950835
+
+waypoint2: 
+      position: 
+        x: -1.27386951447
+        y: -0.353570818901
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0982726208572
+        w: 0.995159530924
+
+
+waypoint3: 
+      position: 
+        x: -0.807711064816
+        y: 0.156031727791
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.432830566648
+        w: 0.901475291162
+
+
+
+waypoint4: 
+      position: 
+        x: 0.0343171805143
+        y: 0.39836654067
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: -0.742569649202
+        w: 0.669768852727
+
+
+waypoint5: 
+      position: 
+        x: 0.546581923962
+        y: 0.675678253174
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: -0.707387565315
+        w: 0.706825885518
+
+
+
+waypoint6: 
+      position: 
+        x: 0.754539966583
+        y: 0.258934497833
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.988455288151
+        w: -0.151512848714
+
+
+waypoint7:
+      position: 
+        x: 0.344934433699
+        y: -0.487733006477
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.999151473776
+        w: 0.0411865566737
+
+
+
+# 路径规划(讲解),data: 导航点；data1:讲解音频；data2:进入下一个区域音频；
+
+route0: 
+  station0: (1, None, None)
+  station1: (2, None, None)
+  station2: (3, None, None)
+  station3: (4, None, None)
+  station4: (5, None, None)
+  station5: (6, None, None)
+
+
+route1: 
+  station0: (0, 4, 5)
+  station1: (1, 6, 7)
+  station2: (5, 2, 7)
+  station3: (4, 8, 1)
+  station4: (0, None, None)
+
+# 路径规划(物联网) ， data: 导航点；sp_data：喷雾消杀（0-3）；ul_data：紫外线消杀（0-1）；iot_light：物联网灯（0-7）；iot_trashcan：物联网窗帘（0-1）；iot_gateway：物联网闸机（0-1）；iot_door：物联网门铃（0-3）
+
+# 111  110 .... 000 11 .. 00
+
+route5: 
+  station0: (0, None, 1, 7, 1, 1, 1)
+  station1: (1, None, None, 0, 0, 0, 2)
+  station2: (4, None, None, 0, 0, 0, 3)
+  station3: (5, None, 0, 7, 1, 1, 0)
+  station4: (0, None, None, 0, 0, 0, 0)
+
+route6: 
+  station0: (0, 2, None, 1, 1, 1, 1)
+  station1: (1, None, None, 3, 0, 0, 2)
+  station2: (4, None, None, 0, 0, 1, 3)
+  station3: (5, None, None, 7, 1, 0, 0)
+  station4: (0, 0, None, 0, 0, 1, 0)
+
+
+# 路径规划(物联网) ， data: 导航点；warehouse_pub:货仓控制（0-2）；arm_data: 机械臂控制；iot_light：物联网灯（0-7）；iot_trashcan：物联网窗帘（0-1）；iot_gateway：物联网闸机（0-1）；iot_door：物联网门铃（0-3） 
+
+route7: 
+  station0: (0, 0, None, 0, 0, 0, 0)
+  station1: (1, 1, 1, 0, 0, 0, 0)
+  station2: (0, 1, None, 0, 0, 0, 0)
+
+
+# 语音文件
+sound: 
+  sound0: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/start.mp3'
+  sound1: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/end.mp3'
+  sound2: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/guest_rooms.mp3'
+  sound3: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/go_hall.mp3'
+  sound4: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/hall.mp3'
+  sound5: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/go_warehouse.mp3'
+  sound6: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/warehouse.mp3'
+  sound7: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/go_bedroom.mp3'
+  sound8: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/bedroom.mp3'
+  sound9: '/home/castlex/castlex_ws/src/castlex_navigation/voice/jiangjie/bedroom.mp3'
+
+
+
+
+

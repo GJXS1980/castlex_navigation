@@ -24,7 +24,7 @@ from ruamel import yaml
 class castlex_with_arm():
     def __init__(self):
 
-        self.MQTTHOST = "192.168.43.232"	# 服务器ip
+        self.MQTTHOST = "192.168.10.2"	# 服务器ip
         self.MQTTPORT = 50001	# 服务器端口
         self.mqttClient = mqtt.Client()
         #   Mqtt连接
@@ -44,7 +44,7 @@ class castlex_with_arm():
         rospy.on_shutdown(self.shutdown)
         self.routes, self.waypoints, self.sounds = [], list(), []
         #   导入yaml文件
-        self.data = (yaml.safe_load(open('/home/castlex/castlex_ws/src/castlex_navigation/script/castlex_tasks/nav_waypoints.yaml'))) 
+        self.data = (yaml.safe_load(open('/home/castlex/castlex_ws/src/castlex_navigation/script/castlex_tasks/castlex_arm_waypoints.yaml'))) 
 
 
         rospy.Subscriber('/odom', Odometry, self.castlex_odom)
@@ -66,9 +66,9 @@ class castlex_with_arm():
         self.gateway_cmd = rospy.Publisher('/Gateway_CMD_Topic', Int32, queue_size=1)
 
     #   获取yaml文件数据(data:yaml的文件路径，str_word:获取名称， i:提取几个导航点，j：选取的路径,k：路径有几个途经点 )
-        self.routes = self.yaml_data(self.data, 'route', None, 7, 6, None)
+        self.routes = self.yaml_data(self.data, 'route', None, 7, 3, None)
         #   获取导航点
-        self.waypoints = self.yaml_data(self.data, 'waypoint', 7, None, 8, None)
+        self.waypoints = self.yaml_data(self.data, 'waypoint', 8, None, 4, None)
         #   获取语音文件
         #self.sounds = self.yaml_data(self.data, 'sound', None, None, None, None)
 
@@ -78,7 +78,7 @@ class castlex_with_arm():
         self.rate = rospy.Rate(50)
         while self.runing:
             # 用了几条路径，和self.routes第二个值对应上
-            self.routing_iot_nav(6)
+            self.routing_iot_nav(3)
             rospy.spin()
 
     # 结合路径和导航进行控制
