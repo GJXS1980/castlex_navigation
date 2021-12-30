@@ -19,6 +19,7 @@ class MoveBaseDoor():
     def __init__(self):
         self.i, self.runing, self.id = 0, 1, 0  
         self.nav_data = False
+        self.order = None
         #         初始化ros节点
         rospy.init_node('send_goals_node', anonymous=False)
         rospy.on_shutdown(self.shutdown)
@@ -31,7 +32,6 @@ class MoveBaseDoor():
         #   发布喷雾消杀话题
         self.sp_pub = rospy.Publisher("/spray_kill", Int32, queue_size=1)
 
-
         # 门铃控制,发送给物联网模块  1/0  开/关
         self.door_cmd = rospy.Publisher('/Door_CMD_Topic', Int32, queue_size=1)
         # 灯光控制,发送给物联网模块  1/0  开/关
@@ -43,11 +43,11 @@ class MoveBaseDoor():
 
 
     #   获取yaml文件数据(data:yaml的文件路径，str_word:获取名称， i:提取几个导航点，j：选取的路径,k：路径有几个途经点 )
-        self.routes = self.yaml_data(self.data, 'route', None, 2, 5, None)
+        self.routes = self.yaml_data(self.data, 'route', None, 6, 5, None)
         #   获取导航点
-        self.waypoints = self.yaml_data(self.data, 'waypoint', 8, None, None, None)
+        self.waypoints = self.yaml_data(self.data, 'waypoint', 7, None, None, None)
         #   获取语音文件
-        self.sounds = self.yaml_data(self.data, 'sound', 2, None, None, 10)
+        self.sounds = self.yaml_data(self.data, 'sound', 5, None, None, 10)
 
         # 播放开始音频
         #playsound(self.sounds[0])
@@ -56,7 +56,8 @@ class MoveBaseDoor():
         while self.runing:
             # 用了几条路径，和self.routes第二个值对应上
             # self.routing_nav(4)
-            self.routing_iot_nav(5)
+            if self.order :
+                self.routing_iot_nav(6)
 
     # 结合路径和导航进行控制
     def routing_nav(self, data):

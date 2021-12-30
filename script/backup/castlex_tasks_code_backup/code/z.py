@@ -26,22 +26,22 @@ class Odom_xy():
 
         rospy.spin()
 
-    def castlex_odom(self, pose):
-        self.odom_x = pose.pose.pose.position.x
-        self.odom_y = pose.pose.pose.position.y
+    def castlex_odom(self, data):
+        self.data_l = data.data[0]
+        self.data_r = data.data[1]
 
     def nav_id(self, data):
         self.x_id_result = data.data
 
     def odom_cmd(self, data):
-        self.odom_xy(0.3, 0)
+        self.odom_xy(0.3, 0.3)
 
     #   函数
     def odom_xy(self, data1, data2): 
         move_cmd = Twist()
         while(self.data1_sta):
             if (self.odom_x < data1):
-                move_cmd.linear.x = -0.05
+                move_cmd.linear.x = 0.05
                 self.cmd_vel.publish(move_cmd)                
             else:
                 move_cmd.linear.x = 0.0

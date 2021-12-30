@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<launch>
+
+    <!-- 启动激光雷达驱动 -->
+    <include file="$(find arvlidar_ros)/launch/castlexlidar_A2.launch"/>
+
+    <!-- 启动底盘驱动 -->
+    <include file="$(find castlex_bringup)/launch/castlex_stm32_bringup.launch"/>
+
+    <!-- 启动导航-->
+    <include file="$(find castlex_navigation)/launch/nav_ws/castlex_amcl_nav.launch"/>
+
+     <!-- 启动导航-->   
+    <node pkg = "castlex_navigation" type = "castlex_all_tasks_with_arm.py" name = "castlex_all_tasks_with_arm" output="screen" >
+
+     <!-- 导入yaml文件-->   
+    <param name="yaml_path" value="$(find castlex_navigation)/script/castlex_tasks/nav_waypoints.yaml" />
+    <!-- 选择第几条路径 -->
+    <param name="routes_j" value= "4" />
+    <!-- 路径有几个途经点 -->
+    <param name="routes_k" value= "4" />
+    <!-- 导航点 -->
+    <param name="waypoints_nav" value= "8" />
+    <!-- mqtt服务器ip -->
+    <param name="MQTTHOST" value= "192.168.3.10" />
+    <!-- mqtt服务器端口 -->
+    <param name="MQTTPORT" value= "50001" />
+    <!-- castlex停止距离 -->
+    <param name="front_dis" value= "95" />
+    <!-- castlex逃逸距离 -->
+    <param name="back_dis" value= "200" />
+    <!-- castlex靠近速度 -->
+    <param name="front_vel" value= "0.1" />
+    <!-- castlex远离速度 -->
+    <param name="back_vel" value= "-0.1" />
+
+  </node>    
+
+</launch>

@@ -1,117 +1,119 @@
 # 导航点
-# 0:大厅； 1：到货仓的过渡点； 2：仓库（机械壁）； 3：到闸机； 4：过闸机； 5：客房1； 6：客房； 7：客房2
 waypoint0: 
       position: 
-        x: 1.33251035213
-        y: 0.273147314787
+        x: -0.781872630119
+        y: -0.390957474709
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: -0.231069074112
-        w: 0.972937347926
+        z: -0.117613749993
+        w: 0.993059417061
 
 
 waypoint1: 
       position: 
-        x: 0.476891130209
-        y: 0.155587464571
+        x: 0.14893245697
+        y: -0.815593719482
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: 0.955901308836
-        w: 0.293688079031
-
+        z: -0.0969293476382
+        w: 0.995291264689
 
 
 waypoint2: 
       position: 
-        x: -0.228426963091
-        y: 0.0351812429726
+        x: -1.14951014519
+        y: 0.628080606461
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: -0.65224540268
-        w: 0.758007872441
+        z: -0.743454973442
+        w: 0.668785991529
 
 
 waypoint3: 
       position: 
-        x: -0.25637575984
-        y: 0.859032452106
+        x: 1.20587611198
+        y: -0.334169477224
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: 0.0126943605851
-        w: 0.999919423358
-
+        z: -0.193532008432
+        w: 0.981093961714
 
 
 waypoint4: 
       position: 
-        x: 0.893832623959
-        y: 0.492024540901
+        x: 2.03574728966
+        y: -0.58551877737
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: -0.00627279545064
-        w: 0.999980325825
-
+        z: 0.717504043569
+        w: 0.696554339203
 
 waypoint5: 
       position: 
-        x: 1.33334112167
-        y: 0.593109369278
+        x: 2.04890298843
+        y: -1.06287884712
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: 0.695049083677
-        w: 0.718962287801
-
+        z: 0.982856446206
+        w: 0.184372465814
 
 
 waypoint6: 
       position: 
-        x: 1.40585255623
-        y: 0.0789449512959
+        x: 1.26335155964
+        y: -1.2182765007
         z: 0.0
       orientation: 
         x: 0.0
         y: 0.0
-        z: -0.00627274888543
-        w: 0.999980326117
+        z: -0.729967893712
+        w: 0.68348143658
 
-
-waypoint7:
-      position: 
-        x: 1.40800285339
-        y: -0.379062891006
-        z: 0.0
-      orientation: 
-        x: 0.0
-        y: 0.0
-        z: -0.742805218966
-        w: 0.669507585227
 
 
 
 # 路径规划(讲解),data: 导航点；data1:讲解音频；data2:进入下一个区域音频；
 
 route0: 
-  station0: (0, None, None)
-  station1: (1, None, None)
-  station2: (2, None, None)
-  station3: (3, None, None)
-  station4: (4, None, None)
-  station5: (5, None, None)
-  station6: (6, None, None)
+  station0: (1, None, None)
+  station1: (2, None, None)
+  station2: (3, None, None)
+  station3: (4, None, None)
+  station4: (5, None, None)
+  station5: (6, None, None)
+
 
 route1: 
+  station0: (1, 2, 3)
+  station1: (3, 4, 5)
+  station2: (2, 6, 7)
+  station3: (0, 8, 1)
+
+route2: 
+  station0: (1, 2, 3)
+  station1: (3, 4, 5)
+  station2: (2, 6, 7)
+  station3: (0, 8, 1)
+
+route3: 
+  station0: (1, 2, 3)
+  station1: (3, 4, 5)
+  station2: (2, 6, 7)
+  station3: (0, 8, 1)
+
+route4: 
   station0: (0, 4, 5)
   station1: (1, 6, 7)
   station2: (5, 2, 7)
@@ -122,14 +124,14 @@ route1:
 
 # 111  110 .... 000 11 .. 00
 
-route2: 
+route5: 
   station0: (0, None, 1, 7, 1, 1, 1)
   station1: (1, None, None, 0, 0, 0, 2)
   station2: (4, None, None, 0, 0, 0, 3)
   station3: (5, None, 0, 7, 1, 1, 0)
   station4: (0, None, None, 0, 0, 0, 0)
 
-route3: 
+route6: 
   station0: (0, 2, None, 1, 1, 1, 1)
   station1: (1, None, None, 3, 0, 0, 2)
   station2: (4, None, None, 0, 0, 1, 3)
@@ -139,12 +141,15 @@ route3:
 
 # 路径规划(物联网) ， data: 导航点；warehouse_pub:货仓控制（0-2）；arm_data: 机械臂控制；iot_light：物联网灯（0-7）；iot_trashcan：物联网窗帘（0-1）；iot_gateway：物联网闸机（0-1）；iot_door：物联网门铃（0-3） 
 
-route4: 
-  station0: (0, 0, None, 0, 0, 0, 0)
-  station1: (1, None, None, 0, 0, 0, 0)
-  station2: (2, 1, 1, 0, 0, 0, 0)
-  station3: (0, 1, None, 0, 0, 0, 0)
-
+route7: 
+  station0: (0, None, None, 0, 0, 0, 0)
+  station1: (1, 1, None, 0, 0, 0, 0)
+  station2: (2, None, None, 0, 0, 1, 0)
+  station3: (3, None, None, 0, 0, 0, 0)
+  station4: (4, 1, None, 1, 0, 0, 1)
+  station5: (3, None, None, 0, 0, 1, 0)
+  station6: (2, None, None, 0, 0, 0, 0)
+  station7: (0, None, None, 0, 0, 0, 0)
 
 # 语音文件
 sound: 

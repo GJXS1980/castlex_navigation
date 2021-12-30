@@ -26,11 +26,14 @@ class MoveBaseDoor():
         #   导入yaml文件
         self.data = (yaml.safe_load(open('/home/castlex/castlex_ws/src/castlex_navigation/script/castlex_tasks/nav_waypoints.yaml'))) 
 
-        #   发布紫外消杀话题
-        self.ul_pub = rospy.Publisher("/ultraviolet_disinfection", Int32, queue_size=1)
-        #   发布喷雾消杀话题
-        self.sp_pub = rospy.Publisher("/spray_kill", Int32, queue_size=1)
 
+        #   发布紫外消杀话题
+        self.ul_pub = rospy.Publisher("ultraviolet_disinfection", Int32, queue_size=1)
+        #   发布喷雾消杀话题
+        self.sp_pub = rospy.Publisher("spray_kill", Int32, queue_size=1)
+
+        #   发布货仓控制话题
+        self.warehouse_pub = rospy.Publisher('/Warehouse_control', Int32, queue_size=1)
 
         # 门铃控制,发送给物联网模块  1/0  开/关
         self.door_cmd = rospy.Publisher('/Door_CMD_Topic', Int32, queue_size=1)
@@ -43,11 +46,11 @@ class MoveBaseDoor():
 
 
     #   获取yaml文件数据(data:yaml的文件路径，str_word:获取名称， i:提取几个导航点，j：选取的路径,k：路径有几个途经点 )
-        self.routes = self.yaml_data(self.data, 'route', None, 2, 5, None)
+        self.routes = self.yaml_data(self.data, 'route', None, 7, 8, None)
         #   获取导航点
-        self.waypoints = self.yaml_data(self.data, 'waypoint', 8, None, None, None)
+        self.waypoints = self.yaml_data(self.data, 'waypoint', 7, None, 8, None)
         #   获取语音文件
-        self.sounds = self.yaml_data(self.data, 'sound', 2, None, None, 10)
+        self.sounds = self.yaml_data(self.data, 'sound', None, None, None, None)
 
         # 播放开始音频
         #playsound(self.sounds[0])
@@ -55,8 +58,24 @@ class MoveBaseDoor():
         self.rate = rospy.Rate(50)
         while self.runing:
             # 用了几条路径，和self.routes第二个值对应上
-            # self.routing_nav(4)
-            self.routing_iot_nav(5)
+            self.routing_iot_nav(7)
+
+    # 紫外消杀命令词
+    def castlex_ul_order(self, data):
+        if(data.data == 0 and self.order) :
+            self.ac.cancel_goal()
+            self.ul_pub.publish(0)
+        self.order = data.data
+        self.grade = data.data
+
+    # 喷雾消杀命令词
+    def castlex_sp_order(self, data):
+        if(data.data[1] == 0 and self.order) :
+            self.ac.cancel_goal()
+            self.sp_pub.publish(0)
+        self.order = data.data[1]
+        self.grade = data.data[0]
+
 
     # 结合路径和导航进行控制
     def routing_nav(self, data):
@@ -92,16 +111,23 @@ class MoveBaseDoor():
                     pass
             self.nav_data = False
 
-    # 路径规划(物联网) ， data: 导航点；sp_data：喷雾消杀；ul_data：紫外线消杀；iot_light：物联网灯；iot_trashcan：物联网窗帘；iot_gateway：物联网闸机；iot_door：物联网门铃
-    def iot_routing(self, data, sp_data, ul_data, iot_light, iot_trashcan, iot_gateway,  iot_door):
+    # 路径规划(物联网) ， data: 导航点；warehouse_pub:货仓控制；arm_data: 机械臂控制；iot_light：物联网灯；iot_trashcan：物联网窗帘；iot_gateway：物联网闸机；iot_door：物联网门铃 
+    def iot_routing(self, data, warehouse_data, arm_data, iot_light, iot_trashcan, iot_gateway,  iot_door):
         self.goal(data)
         if self.nav_data:
-            #   喷雾消杀
-            for i in range(0, 4):
-                if i == sp_data:
-                    self.sp_pub.publish(sp_data)
+            #   货仓控制
+            for i in range(0, 2):
+                if i == warehouse_data:
+                    self.warehouse_pub.publish(warehouse_data)
                     rospy.sleep(1)
                     break
+            #   机械臂控制
+            for i in range(0, 2):
+                if i == arm_data:
+                    self.arme_pub.publish(arm_data)
+                    rospy.sleep(1)
+                    break
+
             #   物联网灯
             for i in range(0, 8):
                 if i == iot_light:
@@ -125,12 +151,6 @@ class MoveBaseDoor():
                 if i ==  iot_door:
                     self.door_cmd.publish(iot_door)
                     rospy.sleep(1) 
-                    break
-            #   紫外线消杀
-            for i in range(0, 2):
-                if i == ul_data:
-                    self.ul_pub.publish(ul_data)
-                    rospy.sleep(35) 
                     break
             self.nav_data = False
 

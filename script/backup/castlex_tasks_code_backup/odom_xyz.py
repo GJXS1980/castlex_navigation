@@ -34,14 +34,14 @@ class Odom_xy():
         self.x_id_result = data.data
 
     def odom_cmd(self, data):
-        self.odom_xy(0.3, 0)
+        self.odom_xy(0.3, 0.3)
 
     #   函数
     def odom_xy(self, data1, data2): 
         move_cmd = Twist()
         while(self.data1_sta):
             if (self.odom_x < data1):
-                move_cmd.linear.x = -0.05
+                move_cmd.linear.x = 0.05
                 self.cmd_vel.publish(move_cmd)                
             else:
                 move_cmd.linear.x = 0.0

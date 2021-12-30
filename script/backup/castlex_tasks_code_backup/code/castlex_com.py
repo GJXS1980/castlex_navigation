@@ -9,9 +9,8 @@ from playsound import playsound
 from actionlib_msgs.msg import *
 from geometry_msgs.msg import Pose, Point, Quaternion, Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from std_msgs.msg import Int32MultiArray, Int64
-from std_msgs.msg import Float32MultiArray, Int32 
- 
+from std_msgs.msg import Float32MultiArray, Int64
+from std_msgs.msg import Float32MultiArray, Int32
 
 from ruamel import yaml
 # sudo pip install ruamel.yaml
@@ -19,6 +18,7 @@ class MoveBaseDoor():
     def __init__(self):
         self.i, self.runing, self.id = 0, 1, 0  
         self.nav_data = False
+        self.com_order = None
         #         初始化ros节点
         rospy.init_node('send_goals_node', anonymous=False)
         rospy.on_shutdown(self.shutdown)
@@ -31,7 +31,6 @@ class MoveBaseDoor():
         #   发布喷雾消杀话题
         self.sp_pub = rospy.Publisher("/spray_kill", Int32, queue_size=1)
 
-
         # 门铃控制,发送给物联网模块  1/0  开/关
         self.door_cmd = rospy.Publisher('/Door_CMD_Topic', Int32, queue_size=1)
         # 灯光控制,发送给物联网模块  1/0  开/关
@@ -43,20 +42,30 @@ class MoveBaseDoor():
 
 
     #   获取yaml文件数据(data:yaml的文件路径，str_word:获取名称， i:提取几个导航点，j：选取的路径,k：路径有几个途经点 )
-        self.routes = self.yaml_data(self.data, 'route', None, 2, 5, None)
+        self.routes = self.yaml_data(self.data, 'route', None, 4, 5, None)
         #   获取导航点
-        self.waypoints = self.yaml_data(self.data, 'waypoint', 8, None, None, None)
+        self.waypoints = self.yaml_data(self.data, 'waypoint', 7, None, 5, None)
         #   获取语音文件
-        self.sounds = self.yaml_data(self.data, 'sound', 2, None, None, 10)
+        self.sounds = self.yaml_data(self.data, 'sound', 4, None, None, 10)
 
         # 播放开始音频
-        #playsound(self.sounds[0])
-        #rospy.sleep(1)
+        playsound(self.sounds[0])
+        rospy.sleep(1)
         self.rate = rospy.Rate(50)
+        self.test = 0
         while self.runing:
-            # 用了几条路径，和self.routes第二个值对应上
-            # self.routing_nav(4)
-            self.routing_iot_nav(5)
+            if self.com_order == 1:
+                # 用多少条路径
+                self.routing_nav(5)
+                if self.id == 4:
+                    self.id = 0
+                    self.test += 1
+                if self.test == 1:
+                    self.id = -1
+          
+    # 讲解话题命令词
+    def voice_com_order(self, data):
+        self.com_order = data.data
 
     # 结合路径和导航进行控制
     def routing_nav(self, data):
@@ -65,14 +74,7 @@ class MoveBaseDoor():
                 con_data = eval(self.routes[i])
                 self.routing(con_data[0], con_data[1], con_data[2])
 
-    # 结合路径和导航进行控制
-    def routing_iot_nav(self, data):
-        for i in range(0, data):
-            if self.id == i:
-                con_data = eval(self.routes[i])
-                self.iot_routing(con_data[0], con_data[1], con_data[2], con_data[3], con_data[4], con_data[5], con_data[6])
-
-    # 路径规划(讲解)
+    # 路径规划
     def routing(self, data, sound_data1, sound_data2):
         self.goal(data)
         if self.nav_data:
@@ -90,48 +92,6 @@ class MoveBaseDoor():
                     break
                 else:
                     pass
-            self.nav_data = False
-
-    # 路径规划(物联网) ， data: 导航点；sp_data：喷雾消杀；ul_data：紫外线消杀；iot_light：物联网灯；iot_trashcan：物联网窗帘；iot_gateway：物联网闸机；iot_door：物联网门铃
-    def iot_routing(self, data, sp_data, ul_data, iot_light, iot_trashcan, iot_gateway,  iot_door):
-        self.goal(data)
-        if self.nav_data:
-            #   喷雾消杀
-            for i in range(0, 4):
-                if i == sp_data:
-                    self.sp_pub.publish(sp_data)
-                    rospy.sleep(1)
-                    break
-            #   物联网灯
-            for i in range(0, 8):
-                if i == iot_light:
-                    self.light_cmd.publish(iot_light)
-                    rospy.sleep(1) 
-                    break
-            #   物联网窗帘
-            for i in range(0, 2):
-                if i == iot_trashcan:
-                    self.trashcan_cmd.publish(iot_trashcan)
-                    rospy.sleep(1) 
-                    break
-            #   物联网闸机
-            for i in range(0, 2):
-                if i == iot_gateway:
-                    self.gateway_cmd.publish(iot_gateway)
-                    rospy.sleep(1) 
-                    break
-            #   物联网门铃
-            for i in range(0, 4):
-                if i ==  iot_door:
-                    self.door_cmd.publish(iot_door)
-                    rospy.sleep(1) 
-                    break
-            #   紫外线消杀
-            for i in range(0, 2):
-                if i == ul_data:
-                    self.ul_pub.publish(ul_data)
-                    rospy.sleep(35) 
-                    break
             self.nav_data = False
 
     #   导航函数
