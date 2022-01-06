@@ -29,10 +29,9 @@ class castlex_with_arm():
         self.sub_msg, self.sub_name, self.sub_dir, self.sub_action, self.sub_feedback = None, None, None, None, None,
         self.odom_x, self.odom_y = 0.0, 0.0
         self.castlex_data = False
-        # self.odom_front, self.odom_back = 0, 0
+        self.odom_front, self.odom_back = 0, 0
         self.front_id, self.back_id = 1, 1
         self.ultrasonic_data_l, self.ultrasonic_data_r = 0.0, 0.0
-        self.front_flag, self.back_flag = False, False
 
         #   初始化ros节点
         rospy.init_node('castlex_arm_all_tasks_node', anonymous=False)
@@ -100,11 +99,11 @@ class castlex_with_arm():
         #playsound(self.sounds[0])
         #rospy.sleep(1)
         #   打开所有传感器
-        # self.sensor_pub.publish(7)
-        # time.sleep(3)
+        self.sensor_pub.publish(7)
+        time.sleep(3)
 
         while self.runing:
-            #time.sleep(0.1)
+             time.sleep(0.1)
             # 用了几条路径，和self.routes第二个值对应上
             self.routing_iot_nav(self.routes_k)
         rospy.spin()
@@ -116,11 +115,7 @@ class castlex_with_arm():
             self.ultrasonic_odom_data = self.ultrasonic_data_r
         else:
             self.ultrasonic_odom_data = self.ultrasonic_data_l
-        # print(self.ultrasonic_odom_data)
-        if self.front_flag:
-            self.castlex_odom_front(self.front_dis, self.front_vel)
-        elif self.back_flag:
-            self.castlex_odom_back(self.back_dis, self.back_vel)
+
     # 结合路径和导航进行控制
     def routing_iot_nav(self, data):
         for i in range(0, data):
@@ -136,44 +131,43 @@ class castlex_with_arm():
             for i in range(0, 2):
                 if i == warehouse_data:
                     self.warehouse_pub.publish(warehouse_data)
-                    rospy.sleep(0.1)
+                    rospy.sleep(0.5)
                     break
 
             #   物联网灯
             for i in range(0, 8):
                 if i == iot_light:
                     self.light_cmd.publish(iot_light)
-                    rospy.sleep(0.1) 
+                    rospy.sleep(0.5) 
                     break
             #   物联网窗帘
             for i in range(0, 2):
                 if i == iot_trashcan:
                     self.trashcan_cmd.publish(iot_trashcan)
-                    rospy.sleep(0.1) 
+                    rospy.sleep(0.5) 
                     break
 
             #   物联网闸机
             for i in range(0, 2):
                 if i == iot_gateway:
                     self.gateway_cmd.publish(iot_gateway)
-                    rospy.sleep(0.1) 
+                    rospy.sleep(0.5) 
                     break
 
             #   物联网门铃
             for i in range(0, 4):
                 if i ==  iot_door:
                     self.door_cmd.publish(iot_door)
-                    rospy.sleep(0.1) 
+                    rospy.sleep(0.5) 
                     break
 
             #  发布以及到达装货点，请求装货
             for i in range(0, 2):
                 if arm_data == 1:
                     #   前进
-                    self.front_flag = True
-                    # self.castlex_odom_front(self.front_dis, self.front_vel)
+                    self.castlex_odom_front(self.front_dis, self.front_vel)
                     #   发布mqtt话题
-                    # self.arm_data = True
+                    self.arm_data = True
                     #rospy.sleep(1)
                     break
 
@@ -187,8 +181,7 @@ class castlex_with_arm():
                     self.warehouse_pub.publish(0)
                     rospy.sleep(0.5)
                     # 后退
-                    self.back_flag = True
-                    # self.castlex_odom_back(self.back_dis, self.back_vel)
+                    self.castlex_odom_back(self.back_dis, self.back_vel)
                     break
             self.nav_data = False
 
@@ -224,7 +217,7 @@ class castlex_with_arm():
             if state == GoalStatus.SUCCEEDED: 
                 self.id += 1 
                 self.nav_data = True
-                # self.odom_front = self.odom_x
+                self.odom_front = self.odom_x
                 
                 #   发布导航成功的flag
                 rospy.loginfo("You have reached the goal!")
@@ -271,7 +264,7 @@ class castlex_with_arm():
     #   里程计控制函数
     def castlex_odom_front(self, data, data_vel): 
         move_cmd = Twist()
-        if self.front_id:
+        while(self.front_id):
             if self.ultrasonic_odom_data > data:
                 move_cmd.linear.x = data_vel
                 self.cmd_vel.publish(move_cmd) 
@@ -279,13 +272,11 @@ class castlex_with_arm():
                 move_cmd.linear.x = 0.0
                 self.cmd_vel.publish(move_cmd) 
                 self.front_id = 0
-                self.front_flag = False
-                self.arm_data = True
 
     #   里程计控制函数
     def castlex_odom_back(self, data, data_vel): 
         move_cmd = Twist()
-        if self.back_id:
+        while(self.back_id):
             if self.ultrasonic_odom_data < data:
                 move_cmd.linear.x = data_vel
                 self.cmd_vel.publish(move_cmd) 
@@ -293,7 +284,6 @@ class castlex_with_arm():
                 move_cmd.linear.x = 0.0
                 self.cmd_vel.publish(move_cmd) 
                 self.back_id = 0
-                self.back_flag = False
 
     def castlex_odom(self, pose):
         self.odom_x = pose.pose.pose.position.x
