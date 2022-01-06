@@ -7,7 +7,7 @@
     
   <!-- 导入建好的地图 -->
   <!--node name="map_server" pkg="map_server" type="map_server" args="$(find castlex_navigation)/maps/$(env NEW_MAP)" /--> 
-  <node name="map_server" pkg="map_server" type="map_server" args="$(find castlex_navigation)/maps/001.yaml" /> 
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find castlex_navigation)/maps/HG.yaml" /> 
   <!-- 机器人在地图中的初始化位置 -->
   <arg name="initial_pose_x"  default="0.069"/>
   <arg name="initial_pose_y"  default="-0.020"/>

@@ -276,11 +276,11 @@ class castlex_with_arm():
                 move_cmd.linear.x = data_vel
                 self.cmd_vel.publish(move_cmd) 
             else:
+                self.arm_data = True
                 move_cmd.linear.x = 0.0
                 self.cmd_vel.publish(move_cmd) 
                 self.front_id = 0
                 self.front_flag = False
-                self.arm_data = True
 
     #   里程计控制函数
     def castlex_odom_back(self, data, data_vel): 
