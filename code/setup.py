@@ -14,10 +14,10 @@ USAGE:
 
 '''
 # 在列表中输入需要加密的py文件
-key_funs = ['castlex_all_tasks_with_arm_python.py']
+key_funs = ['castlex_iot_spray_tasks_python.py']
 
 setup(
-    name="castlex_all_tasks_with_arm_python app", 
+    name="castlex_iot_spray_tasks_python app", 
     ext_modules = cythonize(key_funs),
 )
 

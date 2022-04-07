@@ -19,20 +19,25 @@
     <!-- 选择第几条路径 -->
     <param name="routes_j" value= "4" />
     <!-- 路径有几个途经点 -->
-    <param name="routes_k" value= "4" />
+    <param name="routes_k" value= "2" />
     <!-- 导航点 -->
-    <param name="waypoints_nav" value= "8" />
+    <param name="waypoints_nav" value= "7" />
     <!-- mqtt服务器ip -->
-    <param name="MQTTHOST" value= "192.168.3.10" />
+    <param name="MQTTHOST" value= "10.0.10.221" />
     <!-- mqtt服务器端口 -->
     <param name="MQTTPORT" value= "50001" />
-    <!-- castlex停止距离 -->
-    <param name="front_dis" value= "100" />
-    <!-- castlex逃逸距离 -->
-    <param name="back_dis" value= "200" />
-    <!-- castlex靠近速度 -->
-    <param name="front_vel" value= "0.1" />
-    <!-- castlex远离速度 -->
+
+    <!-- castlex停止距离（单位：m） -->
+    <param name="front_dis" value= "0.40" />
+    <!-- castlex前进动作时间（单位：s） -->
+    <param name="front_action_time" value= "5" />
+    <!-- castlex后退动作时间（单位：s） -->
+    <param name="back_action_time" value= "3" />
+    <!-- castlex逃逸距离（单位：m） -->
+    <param name="back_dis" value= "0.01" />
+    <!-- castlex靠近速度（单位：m/s） -->
+    <param name="front_vel" value= "0.06" />
+    <!-- castlex远离速度（单位：m/s） -->
     <param name="back_vel" value= "-0.1" />
 
   </node>    

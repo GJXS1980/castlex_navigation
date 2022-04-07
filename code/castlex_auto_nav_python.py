@@ -3,9 +3,11 @@
 
 import roslib
 import time
+#roslib.load_manifest('simple_navigation_goals_tutorial')
 import rospy
 import actionlib
 from playsound import playsound
+
 from actionlib_msgs.msg import *
 from geometry_msgs.msg import Pose, Point, Quaternion, Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
@@ -14,99 +16,64 @@ from std_msgs.msg import Float32MultiArray, Int32
 
 from ruamel import yaml
 # sudo pip install ruamel.yaml
-class CASTLEX_COM():
+class CASTLEX_NAV():
     def __init__(self):
         self.i, self.runing, self.id = 0, 1, 0  
         self.nav_data = False
-        self.com_order = 0
+
         #         初始化ros节点
         rospy.init_node('send_goals_node', anonymous=False)
+
         rospy.on_shutdown(self.shutdown)
         self.routes, self.waypoints, self.sounds = [], list(), []
         #   导入yaml文件
-        self.yaml_path = rospy.get_param("~yaml_path", '/home/castlex/castlex_ws/src/castlex_navigation/script/castlex_tasks/nav_waypoints.yaml')
-        self.data = (yaml.safe_load(open(self.yaml_path)))  
+        self.yaml_path = rospy.get_param("~yaml_path", '/home/castlex/castlex_ws/src/castlex_navigation/params/nav_waypoints.yaml')
+        self.data = (yaml.safe_load(open(self.yaml_path))) 
 
-        # 导航路径参数设置
+        #   导航路径参数设置
         self.routes_j = rospy.get_param("~routes_j", 1) #   选择第几条路径
-        self.routes_k = rospy.get_param("~routes_k", 4) #   路径有几个途经点
+        self.routes_k = rospy.get_param("~routes_k", 5) #   路径有几个途经点
 
         #   导航点参数设置
-        self.waypoints_nav = rospy.get_param("~waypoints_nav", 8) #   导航点
-
-        self.sounds_play = rospy.get_param("~sounds_play", 10)
-
-        #   发布紫外消杀话题
-        self.ul_pub = rospy.Publisher("/ultraviolet_disinfection", Int32, queue_size=1)
-        #   发布喷雾消杀话题
-        self.sp_pub = rospy.Publisher("/spray_kill", Int32, queue_size=1)
-
-        # 发布讲解话题
-        self.com_pub = rospy.Publisher("/Commen_CMD_Topic", Int32, queue_size=1)
-
-        #   订阅讲解话题
-        self.com_pub = rospy.Subscriber("/Commen_CMD_Topic", Int32, self.voice_com_order)
-
-        # 门铃控制,发送给物联网模块  1/0  开/关
-        self.door_cmd = rospy.Publisher('/Door_CMD_Topic', Int32, queue_size=1)
-        # 灯光控制,发送给物联网模块  1/0  开/关
-        self.light_cmd = rospy.Publisher('/Lighting_CMD_Topic', Int32, queue_size=1)
-        # 窗帘开关控制,发送给物联网模块  1/0  开/关
-        self.trashcan_cmd = rospy.Publisher('/Trashcan_CMD_Topic', Int32, queue_size=1)
-        # 门闸开关控制,发送给物联网模块  1/0  开/关
-        self.gateway_cmd = rospy.Publisher('/Gateway_CMD_Topic', Int32, queue_size=1)
-
-
-    #   获取yaml文件数据(data:yaml的文件路径，str_word:获取名称， i:提取几个导航点，j：选取的路径,k：路径有几个途经点 )
+        self.waypoints_nav = rospy.get_param("~waypoints_nav", 8) #   导点
+        
+        self.patrol_num = rospy.get_param("~patrol_num", 3)#巡航次数
+    #   获取yaml文件数据(data:yaml的文件路径，str_word:获取名称， i:提取几个导航点，j：选取的路径,k：路径有几个途经点, sound:几个音频文件 )
         self.routes = self.yaml_data(self.data, 'route', None, self.routes_j, self.routes_k, None)
         #   获取导航点
         self.waypoints = self.yaml_data(self.data, 'waypoint', self.waypoints_nav, None, None, None)
         #   获取语音文件
-        self.sounds = self.yaml_data(self.data, 'sound', None, None, None, self.sounds_play)
+        #self.sounds = self.yaml_data(self.data, 'sound', Nones, None, None, 10)
 
         # 播放开始音频
-        playsound(self.sounds[0])
-        rospy.sleep(1)
+       #playsound(self.sounds[0])
+       #rospy.sleep(1)
         self.rate = rospy.Rate(50)
-        self.test = 0
-
+        self.patrol = 0
         while self.runing:
-            time.sleep(0.1)
-            if self.com_order == 1:
+           time.sleep(0.1)
                 # 用多少条路径
-                self.routing_nav(self.routes_k)
-        #rospy.spin()
-          
-    # 讲解话题命令词
-    def voice_com_order(self, data):
-        self.com_order = data.data
+           self.routing_nav(self.routes_k)
+           if self.id == self.routes_k:
+                self.id = 0
+                self.patrol += 1
+           if self.patrol == self.patrol_num:
+                 self.id = -1
+
 
     # 结合路径和导航进行控制
     def routing_nav(self, data):
         for i in range(0, data):
-            if self.id == i:
+           if self.id == i:
                 con_data = eval(self.routes[i])
-                self.routing(con_data[0], con_data[1], con_data[2])
+                self.routing(con_data)
+                rospy.sleep(1)
 
     # 路径规划
-    def routing(self, data, sound_data1, sound_data2):
-        self.goal(data)
-        if self.nav_data:
-            for i in range(0, 10):
-                if i == sound_data1:
-                    playsound(self.sounds[sound_data1])
-                    rospy.sleep(1)
-                    break
-                else:
-                    pass
-            for j in range(0, 10):
-                if j == sound_data2:
-                    playsound(self.sounds[sound_data2])
-                    rospy.sleep(1) 
-                    break
-                else:
-                    pass
-            self.nav_data = False
+    def routing(self, nav_data):
+        self.goal(nav_data)
+
+
 
     #   导航函数
     def goal(self, i):
@@ -115,6 +82,7 @@ class CASTLEX_COM():
         rospy.loginfo("Waiting for move_base action server...")
         self.ac.wait_for_server(rospy.Duration(60))
         rospy.loginfo("Connected to move base server")
+
         # 初始化goal为MoveBaseGoal类型
         goal = MoveBaseGoal()
         # 使用map的frame定义goal的frame id
@@ -181,11 +149,12 @@ class CASTLEX_COM():
         # Cancel any active goals
         self.ac.cancel_goal()
         rospy.sleep(2)
+
         
 #if __name__ == '__main__':
 #    try:
-#        MoveBaseDoor()
-#        rospy.spin()
+#        CASTLEX_NAV()
+#       rospy.spin()
 
 #    except rospy.ROSInterruptException:
 #        rospy.loginfo("Navigation finished.")

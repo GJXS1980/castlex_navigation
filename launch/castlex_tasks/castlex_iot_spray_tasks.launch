@@ -11,22 +11,31 @@
     <!-- 启动导航-->
     <include file="$(find castlex_navigation)/launch/nav_ws/castlex_amcl_nav.launch"/>
 
-    <!-- 启动语音讲解-->
-    <include file="$(find castlex_voice_system)/launch/castlex_com.launch"/>
+    <!-- 启动物联网-->
+    <include file="$(find iot_wifi_system)/launch/castlex_iot_device_python.launch"/>
+
+    <!-- 启动喷雾消杀语音指令-->
+    <include file="$(find castlex_voice_system)/launch/castlex_spray_kill.launch"/>
+ 
+
+   
 
      <!-- 启动导航-->   
-    <node pkg = "castlex_navigation" type = "castlex_com.py" name = "castlex_com" output="screen" >
+    <node pkg = "castlex_navigation" type = "castlex_iot_spray_tasks.py" name = "castlex_iot_tasks" output="screen" >
 
      <!-- 导入yaml文件-->   
     <param name="yaml_path" value="$(find castlex_navigation)/params/nav_waypoints.yaml" />
     <!-- 选择第几条路径 -->
-    <param name="routes_j" value= "1" />
+    <param name="routes_j" value= "2" />
     <!-- 路径有几个途经点 -->
-    <param name="routes_k" value= "4" />
+    <param name="routes_k" value= "7" />
     <!-- 导航点 -->
     <param name="waypoints_nav" value= "7" />
-    <!-- 语音文件 -->
-    <param name="sounds_play" value= "10" />
+
+
+
+
+  
     
 
 

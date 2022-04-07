@@ -11,8 +11,6 @@
     <!-- 启动导航-->
     <include file="$(find castlex_navigation)/launch/nav_ws/castlex_amcl_nav.launch"/>
 
-   
-
      <!-- 启动导航-->   
     <node pkg = "castlex_navigation" type = "castlex_nav.py" name = "castlex_nav" output="screen" >
 
@@ -27,9 +25,6 @@
     <!-- 巡航次数 -->
     <param name="patrol_num" value= "2" />
   
-    
-
-
   </node>    
 
 </launch>

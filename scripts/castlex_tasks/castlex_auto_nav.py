@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from castlex_all_tasks_with_arm_python_odom import castlex_with_arm
+from castlex_auto_nav_python import CASTLEX_NAV
 
 if __name__ == '__main__':
     try:
-        castlex_with_arm()
+        CASTLEX_NAV()
         rospy.spin()
 
     except rospy.ROSInterruptException:
-        rospy.loginfo("mqtt connect failed.")
+        rospy.loginfo("CASTLEX_NAV failed.")
