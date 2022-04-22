@@ -91,13 +91,10 @@ waypoint6:
 # 路径规划(导航),data: 导航点；
 
 route0: 
-  station0: (3)
-  station1: (2)
-  station2: (4)
-  station3: (5)
-  station4: (1)
-  station5: (0)
-  station6: (6)
+  station0: (1, None, None)
+  station1: (0, None, None)
+  station2: (2, None, None)
+  station3: (3, None, None)
 
 
 # 路径规划(讲解),data: 导航点；data1:讲解音频；data2:进入下一个区域音频；
@@ -110,16 +107,16 @@ route1:
  
 
 
-# 路径规划(物联网) ，1 data: 导航点；2 sp_data：喷雾消杀（0-3）；3 iot_data：物联网模块[]
+# 路径规划(物联网) ，1 data: 导航点；2 sp_data：喷雾消杀（0-3）； 3 ul_data：紫外消杀（0-1）；4 iot_data：物联网模块[]
 
 route2: 
-  station0: (3, 0, [0,0])
-  station1: (1, 1, [1,1])
-  station2: (1, 1, [4,1])
-  station3: (3, 0, [1,0])
-  station4: (0, 1, [2,1])
-  station5: (0, 1, [5,1])
-  station6: (3, 0, [2,0])
+  station0: (3, 0, None，[0,0])
+  station1: (1, 1, None，[1,1])
+  station2: (1, 1, None，[4,1])
+  station3: (3, 0, None，[1,0])
+  station4: (0, 1, None，[2,1])
+  station5: (0, 1, None，[5,1])
+  station6: (3, 0, None，[2,0])
 
 
 # 路径规划(物联网) ，1 data: 导航点；2 iot_data：物联网模块[]；3 ul_data：紫外线消杀（0-1）

@@ -18,6 +18,7 @@ from ruamel import yaml
 class CASTLEX_IOT_TASKS():
     def __init__(self):
         self.i, self.runing, self.id = 0, 1, 0  
+        self.ul_order = -1
         self.iot_data = Int32MultiArray()
         self.nav_data, self.sp_order = False, 0
         #         初始化ros节点
@@ -40,7 +41,11 @@ class CASTLEX_IOT_TASKS():
 	
         #   发布喷雾消杀话题
         self.sp_pub = rospy.Publisher("/spray_kill", Int32, queue_size=1)
+
+        # 订阅喷雾消杀话题
         rospy.Subscriber("/spray_kill", Int32, self.voice_sp_order)
+        # 订阅紫外消杀话题
+        rospy.Subscriber("/ultraviolet_disinfection", Int32, self.voice_ul_order)
 
         self.iot_data_pub = rospy.Publisher("/iot_control", Int32MultiArray, queue_size=1)
 
@@ -57,16 +62,17 @@ class CASTLEX_IOT_TASKS():
         self.rate = rospy.Rate(50)
         while self.runing:
             time.sleep(0.1)
-            if self.sp_order != 0:
+            if self.sp_order != 0 or self.ul_order != -1:
             # 用了几条路径，和self.routes第二个值对应上
                 self.routing_iot_nav(self.routes_k)
-
-
-
 
     # 喷雾消杀话题命令词
     def voice_sp_order(self, data):
         self.sp_order = data.data
+
+    # 喷雾消杀话题命令词
+    def voice_ul_order(self, data):
+        self.ul_order = data.data
 
 
     # 结合路径和导航进行控制
@@ -74,12 +80,10 @@ class CASTLEX_IOT_TASKS():
         for i in range(0, data):
             if self.id == i:
                 con_data = eval(self.routes[i])
-                self.iot_routing(con_data[0], con_data[1], con_data[2])
-
-
+                self.iot_routing(con_data[0], con_data[1], con_data[2], con_data[3])
 
     # 路径规划(物联网) ， data: 导航点；sp_data：喷雾消杀；iot_data：物联网模块[ ]
-    def iot_routing(self, data, sp_data, iot_data):
+    def iot_routing(self, data, sp_data, ul_data, iot_data):
         self.goal(data)
         if self.nav_data:
             #   喷雾消杀
@@ -89,6 +93,17 @@ class CASTLEX_IOT_TASKS():
                     rospy.sleep(2)
                     break
 
+            #   紫外线消杀
+            for i in range(0, 2):
+                if i == ul_data:
+                    self.ul_pub.publish(ul_data)
+                    if ul_data == 0:
+                        rospy.sleep(14) 
+                    elif ul_data == 1:
+                        rospy.sleep(32) 
+                    break
+
+            #   物联网控制
             if iot_data[1] == 0 or iot_data[1] == 1:
                 self.iot_data.data = iot_data
                 self.iot_data_pub.publish(self.iot_data)

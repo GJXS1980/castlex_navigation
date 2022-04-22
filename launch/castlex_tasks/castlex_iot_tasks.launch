@@ -15,11 +15,11 @@
     <include file="$(find iot_wifi_system)/launch/castlex_iot_device_python.launch"/>
 
     <!-- 启动喷雾消杀语音指令-->
-    <include file="$(find castlex_voice_system)/launch/castlex_spray_kill.launch"/>
+    <!--include file="$(find castlex_voice_system)/launch/castlex_spray_kill.launch"/-->
  
-
-   
-
+    <!-- 启动紫外消杀语音指令-->
+    <!--include file="$(find castlex_voice_system)/launch/castlex_ultraviolet_disinfection.launch"/-->
+ 
      <!-- 启动导航-->   
     <node pkg = "castlex_navigation" type = "castlex_iot_tasks.py" name = "castlex_iot_tasks" output="screen" >
 
